@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телефонный справочник</title>
+    {% load static %}
+    <link href="{% static 'csss/sites.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to top, rgba(100, 50, 50, 0.8), orange);
+            padding: 20px;
+        }
+
+        .container p {
+            font-size: 2rem;
+            margin: 0;
+            color: white;
+        }
+
+        .container1 {
+            max-width: 600px;
+            margin: 20px auto;
+            background: linear-gradient(to top, rgba(100, 50, 50, 0.8), orange);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+
+        .box1 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .box2 {
+            background-color: #EEFFFF;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box2 input[type="text"] {
+            padding: 8px;
+            font-size: 1rem;
+            width: 60%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .box2 button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: orange;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .box2 button:hover {
+            background-color: darkorange;
+        }
+
+        form[action*="worker_list"] button {
+            margin-left: 10px;
+        }
+
+        form[method="post"] {
+            background: linear-gradient(to top, rgba(100, 50, 50, 0.8), orange);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 350px;
+            margin: 40px auto;
+            color: white;
+        }
+
+        form[method="post"] input[type="submit"] {
+            background-color: white;
+            color: orange;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        form[method="post"] input[type="submit"]:hover {
+            background-color: #ffcc99;
+        }
+
+        footer {
+            margin-top: 60px;
+            font-size: 1.1rem;
+            color: white;
+            background-color: orange;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .box2 input[type="text"] {
+                width: 100%;
+            }
+
+            form[method="post"] {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <p>Список телефонов</p>
+    </div>
+
+    <div class="container1">
+        <div class="box1">
+            <p>Фильтр</p>
+        </div>
+        <div class="box2">
+            <form action="{% url 'search' %}" method="get" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <label for="search">Поиск по:</label>
+                <input name="q" type="text" id="search" placeholder="Поиск...">
+                <button type="submit" name="submit" value="Search">Найти</button>
+            </form>
+            <form action="{% url 'worker_list' %}" method="get">
+                <button type="submit" name="submit">Список сотрудников</button>
+            </form>
+        </div>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Добавить">
+    </form>
+
+    <footer>
+        Тел.: +992 200 94 91 91
+    </footer>
+
+</body>
+</html>

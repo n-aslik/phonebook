@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телефонный справочник</title>
+    {% load static %}
+    <link href="{% static 'csss/sites.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2a2a2a;
+            color: white;
+        }
+
+        .container {
+            background: linear-gradient(to top, rgba(100, 50, 50, 0.8), orange);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: #fff;
+            color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(to top, rgba(100, 50, 50, 0.8), orange);
+            color: #000;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover td {
+            background-color: #ffe0b3;
+        }
+
+        footer {
+            margin-top: 40px;
+            background-color: orange;
+            color: #fff;
+            text-align: left;
+            padding: 20px;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container h1 {
+                font-size: 1.5rem;
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                padding: 10px;
+                background: #fff;
+            }
+
+            td {
+                text-align: right;
+                position: relative;
+                padding-left: 50%;
+                background-color: #fff !important;
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                font-weight: bold;
+                text-align: left;
+            }
+            form[action*="worker_list"] button {
+                margin-left: 10px;
+                
+            }
+    
+            form[method="post"] {
+                background: linear-gradient(to top, rgba(100, 50, 50, 0.8), orange);
+                padding: 30px;
+                border-radius: 20px;
+                max-width: 350px;
+                margin: 40px auto;
+                color: white;
+            }
+    
+            form[method="post"] input[type="submit"] {
+                background-color: white;
+                color: orange;
+                padding: 12px 20px;
+                border: none;
+                border-radius: 8px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            form[method="post"] input[type="submit"]:hover {
+                background-color: #ffcc99;
+            }
+
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Список телефонов</h1>
+        <form action="{% url 'worker_list' %}" method="get">
+            <button type="submit" name="submit" style = " padding: 8px 20px;
+                border: none;
+                border-radius: 5px;
+                background-color: orange;
+                color: white;
+                cursor: pointer;
+                margin:20px;
+                padding: 20px;
+                font-weight: bold;">Список сотрудников</button>
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Пол</th>
+                <th>Рабочий номер</th>
+                <th>Мобильный номер</th>
+                <th>Email</th>
+                <th>Подразделение</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in object_list %}
+            <tr>
+                <td data-label="ФИО">{{ data.FIO }}</td>
+                <td data-label="Пол">{{ data.gen.polcnom }}</td>
+                <td data-label="Рабочий номер">{{ data.work_number }}</td>
+                <td data-label="Мобильный номер">{{ data.mobi_number }}</td>
+                <td data-label="Email">{{ data.email }}</td>
+                <td data-label="Подразделение">{{ data.struct.structcnom }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <footer>
+        Тел.: +992 200 94 91 91
+    </footer>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телефонный справочник</title>
+    {% load static %}
+    <link href="{% static 'csss/sites.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: rgb(42, 42, 42);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: linear-gradient(to right, #d35400, orange);
+        }
+
+        .container .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .container .nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .container .nav a {
+            background-color: white;
+            color: black;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .container .nav a:hover {
+            background-color: #ffd699;
+        }
+
+        .title {
+            text-align: center;
+            margin: 1.5rem 0;
+            font-size: 2rem;
+        }
+
+        .filter-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(to top, rgba(100, 50, 50, 0.8), orange);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .filter-box label {
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .filter-box form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .filter-box input[type="text"] {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .filter-box button {
+            background-color: white;
+            color: black;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .filter-box button:hover {
+            background-color: #ffd699;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem auto;
+            max-width: 1000px;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        th {
+            background: linear-gradient(to right, #d35400, orange);
+            color: white;
+        }
+
+        td {
+            background-color: #f2f2f2;
+            color: black;
+        }
+
+        td a {
+            text-decoration: none;
+            color: #d35400;
+            margin: 0 0.5rem;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 3rem;
+            background-color: orange;
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .filter-box form {
+                flex-direction: column;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            td, th {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="logo">Телефонный справочник</div>
+        <div class="nav">
+            <a href="http://localhost:8000/worker/create/">Сотрудники</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Выход</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="title">Список телефонов</div>
+
+    <div class="filter-box">
+        <label>Фильтр:</label>
+        <form action="{% url 'search' %}" method="get">
+            <input name="q" type="text" placeholder="Введите текст для поиска...">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Пол</th>
+                <th>Раб. номер</th>
+                <th>Моб. номер</th>
+                <th>Email</th>
+                <th>Подразделение</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.FIO }}</td>
+                <td>{{ item.gen.polcnom }}</td>
+                <td>{{ item.work_number }}</td>
+                <td>{{ item.mobi_number }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.struct.structcnom }}</td>
+                <td>
+                    <a href="{% url 'worker_update' item.id %}">Изменить</a> |
+                    <a href="{% url 'worker_delete' item.id %}">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <footer>
+        Тел.: +992 200 94 91 91
+    </footer>
+
+</body>
+
+</html>

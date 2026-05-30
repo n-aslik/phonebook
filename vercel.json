@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "buildCommand": "./build.sh",
+    "builds": [
+      {
+        "src": "phonebook/wsgi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "phonebook/wsgi.py"
+      }
+    ]
+  }
