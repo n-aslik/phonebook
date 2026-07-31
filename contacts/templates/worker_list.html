@@ -172,7 +172,7 @@
     <div class="container">
         <div class="logo">Телефонный справочник</div>
         <div class="nav">
-            <a href="http://localhost:8000/worker/create/">Сотрудники</a>
+            <a href=""{% url 'worker_create' %}">Сотрудники</a>
             {% if user.is_authenticated %}
             <a href="{% url 'logout' %}">Выход</a>
             {% endif %}
